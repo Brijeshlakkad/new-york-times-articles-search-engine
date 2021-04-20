@@ -22,8 +22,6 @@ public class Article {
     @SASI.StandardAnalyzed
     private int year;
 
-    private Date createdAt;
-
     public Article() {
     }
 
@@ -49,13 +47,5 @@ public class Article {
 
     public void setYear(int p_year) {
         year = p_year;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date p_createdAt) {
-        createdAt = p_createdAt;
     }
 }

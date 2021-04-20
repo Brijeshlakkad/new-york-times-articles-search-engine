@@ -1,7 +1,5 @@
 package com.dsd.newyorktimesarticlesearchengine.request;
 
-import java.util.Date;
-
 /**
  * @author Brijesh Lakkad
  * @version 1.0
@@ -9,8 +7,6 @@ import java.util.Date;
 public class ArticleRequest {
     private String sentence;
     private int year;
-
-    private Date createdAt;
 
     public ArticleRequest() {
     }
@@ -29,13 +25,5 @@ public class ArticleRequest {
 
     public void setYear(int p_year) {
         year = p_year;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date p_createdAt) {
-        createdAt = p_createdAt;
     }
 }
