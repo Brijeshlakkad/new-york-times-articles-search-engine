@@ -1,9 +1,15 @@
 package com.dsd.newyorktimesarticlesearchengine.mapper;
 
+import com.dsd.newyorktimesarticlesearchengine.dto.ArticleDTO;
 import com.dsd.newyorktimesarticlesearchengine.entity.Article;
 import com.dsd.newyorktimesarticlesearchengine.request.ArticleRequest;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.ReportingPolicy;
+import org.springframework.data.domain.Slice;
+
+import java.util.List;
 
 @Mapper(uses = {}, unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public abstract class ArticleMapper {
@@ -15,4 +21,9 @@ public abstract class ArticleMapper {
      * @return Created <code>Article</code> from <code>ArticleRequest</code>.
      */
     abstract public Article fromArticleRequest(final ArticleRequest p_articleRequest);
+
+    @Mapping(source = "articleId", target = "slug", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_DEFAULT)
+    abstract public ArticleDTO fromArticle(final Article p_article);
+
+    abstract public List<ArticleDTO> fromArticle(final List<Article> p_articleList);
 }

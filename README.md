@@ -6,3 +6,8 @@
 
 ## Create keyspace:
 > create keyspace newyorktimesarticles WITH REPLICATION = {'class' : 'SimpleStrategy', 'replication_factor' : 2};
+
+## Load data into db using DSBulk
+> dsbulk load -k newyorktimesarticles -t article -url [filename] --schema.mapping "year = year, sentence = sentence, now() = articleid" -h [hostnames]
+#### Example
+> dsbulk load -k newyorktimesarticles -t article -url df_1920.csv --schema.mapping "year = year, sentence = sentence, now() = articleid" -h '54.243.172.59'
