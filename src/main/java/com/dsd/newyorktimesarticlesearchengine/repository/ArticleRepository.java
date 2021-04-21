@@ -6,7 +6,9 @@ import org.springframework.data.cassandra.repository.CassandraRepository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 
-public interface ArticleRepository extends CassandraRepository<Article, String> {
+import java.util.UUID;
+
+public interface ArticleRepository extends CassandraRepository<Article, UUID> {
     @AllowFiltering
     Slice<Article> findBySentenceContaining(String query, Pageable p_pageable);
 

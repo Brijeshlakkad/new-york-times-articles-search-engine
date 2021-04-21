@@ -5,16 +5,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.NO_CONTENT)
-public class NoContentFound extends RuntimeException {
-    public NoContentFound() {
+public class NoArticleFound extends RuntimeException {
+    public NoArticleFound() {
         super();
     }
 
-    public NoContentFound(String message) {
+    public NoArticleFound(String message) {
         super(message);
     }
 
-    public NoContentFound(String message, Throwable cause) {
+    public NoArticleFound(String message, Throwable cause) {
         super(message, cause);
     }
 }

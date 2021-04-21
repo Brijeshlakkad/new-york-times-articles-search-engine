@@ -3,6 +3,8 @@ package com.dsd.newyorktimesarticlesearchengine.dto;
 import java.util.UUID;
 
 /**
+ * Article Data Transfer Object.
+ *
  * @author Brijesh Lakkad
  * @version 1.0
  */

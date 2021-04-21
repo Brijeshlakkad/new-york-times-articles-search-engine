@@ -1,11 +1,15 @@
 package com.dsd.newyorktimesarticlesearchengine.services;
 
 import com.dsd.newyorktimesarticlesearchengine.entity.Article;
+import com.dsd.newyorktimesarticlesearchengine.exceptions.NoArticleFound;
 import com.dsd.newyorktimesarticlesearchengine.repository.ArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Article search services.
@@ -36,5 +40,13 @@ public class ArticleSearchService {
         } else {
             return d_articleRepository.findBySentenceContaining(p_searchQuery, p_pageable);
         }
+    }
+
+    public Article getArticle(UUID p_articleId) {
+        Optional<Article> l_articleOptional = d_articleRepository.findById(p_articleId);
+        if (l_articleOptional.isPresent()) {
+            return l_articleOptional.get();
+        }
+        throw new NoArticleFound(String.format("Article %s not found!", p_articleId));
     }
 }

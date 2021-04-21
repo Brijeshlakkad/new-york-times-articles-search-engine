@@ -39,8 +39,7 @@ public class ArticleSearchController {
         d_articleMapper = Mappers.getMapper(ArticleMapper.class);
     }
 
-    ByteBuffer d_cursor;
-    String d_pagingState;
+    private ByteBuffer d_cursor;
 
     /**
      * Search the article using text query.
@@ -81,17 +80,6 @@ public class ArticleSearchController {
                 l_articles.hasNext());
     }
 
-    public static String bb_to_str(ByteBuffer buffer, Charset charset) {
-        byte[] bytes;
-        if (buffer.hasArray()) {
-            bytes = buffer.array();
-        } else {
-            bytes = new byte[buffer.remaining()];
-            buffer.get(bytes);
-        }
-        return new String(bytes, charset);
-    }
-
     /**
      * Creates an article using <code>ArticleRequest</code>.
      *
@@ -103,5 +91,16 @@ public class ArticleSearchController {
         Article l_article = d_articleMapper.fromArticleRequest(p_articleRequest);
         l_article.setArticleId(UUID.randomUUID());
         return d_articleRepository.save(l_article);
+    }
+
+    /**
+     * Finds the article using the provided article slug.
+     *
+     * @param p_articleSlug Article id to be find.
+     * @return Newly created article.
+     */
+    @RequestMapping(value = "/article/{slug}", method = RequestMethod.GET)
+    public ArticleDTO getArticle(@PathVariable(name = "slug") String p_articleSlug) {
+        return d_articleMapper.fromArticle(d_articleSearchService.getArticle(UUID.fromString(p_articleSlug)));
     }
 }
