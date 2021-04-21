@@ -15,10 +15,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
 import java.util.UUID;
 
 @RestController
@@ -57,12 +57,9 @@ public class ArticleSearchController {
                                            @RequestParam(value = "page", defaultValue = "0") int page,
                                            @RequestParam(value = "size", defaultValue = "10") int size) {
 
-        Pageable l_pageable;
+        Pageable l_pageable = PageRequest.of(page, size);
         if (page >= 1 && d_cursor != null) {
-            l_pageable = PageRequest.of(page, size);
             l_pageable = CassandraPageRequest.of(l_pageable, d_cursor);
-        } else {
-            l_pageable = PageRequest.of(page, size);
         }
 
         if (query.isEmpty()) {
@@ -102,5 +99,31 @@ public class ArticleSearchController {
     @RequestMapping(value = "/article/{slug}", method = RequestMethod.GET)
     public ArticleDTO getArticle(@PathVariable(name = "slug") String p_articleSlug) {
         return d_articleMapper.fromArticle(d_articleSearchService.getArticle(UUID.fromString(p_articleSlug)));
+    }
+
+    /**
+     * Finds the article using the provided article slug and deletes it.
+     *
+     * @param p_articleSlug Article id to be deleted.
+     */
+    @RequestMapping(value = "/article/{slug}", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteArticle(@PathVariable(name = "slug") String p_articleSlug) {
+        Article l_article = d_articleSearchService.getArticle(UUID.fromString(p_articleSlug));
+        d_articleRepository.delete(l_article);
+    }
+
+    /**
+     * Updates the article using the provided article slug.
+     *
+     * @param p_articleSlug Article id to be updated.
+     */
+    @RequestMapping(value = "/article/{slug}", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.OK)
+    public ArticleDTO updateArticle(@PathVariable(name = "slug") String p_articleSlug,
+                                    @RequestBody ArticleRequest p_articleRequest) {
+        Article l_article = d_articleSearchService.getArticle(UUID.fromString(p_articleSlug));
+        l_article.setSentence(p_articleRequest.getSentence());
+        return d_articleMapper.fromArticle(d_articleRepository.save(l_article));
     }
 }

@@ -42,7 +42,7 @@ public class ArticleSearchService {
         }
     }
 
-    public Article getArticle(UUID p_articleId) {
+    public Article getArticle(UUID p_articleId) throws NoArticleFound {
         Optional<Article> l_articleOptional = d_articleRepository.findById(p_articleId);
         if (l_articleOptional.isPresent()) {
             return l_articleOptional.get();
